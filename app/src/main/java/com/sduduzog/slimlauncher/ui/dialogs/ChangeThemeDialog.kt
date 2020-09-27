@@ -17,7 +17,7 @@ class ChangeThemeDialog : DialogFragment(){
         val builder = AlertDialog.Builder(requireContext())
         settings  = requireContext().getSharedPreferences(getString(R.string.prefs_settings), MODE_PRIVATE)
 
-        val active = settings.getInt(getString(R.string.prefs_settings_key_theme), 0)
+        val active = settings.getInt(getString(R.string.prefs_settings_key_theme), 1)
         builder.setTitle(R.string.choose_theme_dialog_title)
         builder.setSingleChoiceItems(R.array.themes_array, active) { dialogInterface, i ->
             dialogInterface.dismiss()

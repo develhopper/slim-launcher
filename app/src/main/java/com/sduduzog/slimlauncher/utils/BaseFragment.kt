@@ -19,7 +19,7 @@ abstract class BaseFragment : Fragment(), ISubscriber {
     override fun onResume() {
         super.onResume()
         val settings = requireContext().getSharedPreferences(getString(R.string.prefs_settings), AppCompatActivity.MODE_PRIVATE)
-        val active = settings.getInt(getString(R.string.prefs_settings_key_theme), 0)
+        val active = settings.getInt(getString(R.string.prefs_settings_key_theme), 1)
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

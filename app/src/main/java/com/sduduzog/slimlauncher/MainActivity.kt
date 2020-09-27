@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(),
     override fun getTheme(): Resources.Theme {
         val theme = super.getTheme()
         settings = getSharedPreferences(getString(R.string.prefs_settings), MODE_PRIVATE)
-        val active = settings.getInt(getString(R.string.prefs_settings_key_theme), 0)
+        val active = settings.getInt(getString(R.string.prefs_settings_key_theme), 1)
         theme.applyStyle(resolveTheme(active), true)
         return theme
     }

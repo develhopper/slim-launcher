@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("com.github.triplet.play") version "2.8.0"
+//    id("com.github.triplet.play") version "2.8.0"
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
@@ -18,12 +18,12 @@ android {
         vectorDrawables{useSupportLibrary = true}
 
         signingConfigs {
-            register("release") {
-                storeFile = file(project.extra["RELEASE_STORE_FILE"] as String)
-                storePassword = project.extra["RELEASE_STORE_PASSWORD"] as String
-                keyAlias = project.extra["RELEASE_KEY_ALIAS"] as String
-                keyPassword = project.extra["RELEASE_KEY_PASSWORD"] as String
-            }
+//            register("release") {
+//                storeFile = file(project.extra["RELEASE_STORE_FILE"] as String)
+//                storePassword = project.extra["RELEASE_STORE_PASSWORD"] as String
+//                keyAlias = project.extra["RELEASE_KEY_ALIAS"] as String
+//                keyPassword = project.extra["RELEASE_KEY_PASSWORD"] as String
+//            }
         }
     }
 
@@ -34,7 +34,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile ("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("release")
+//            signingConfig = signingConfigs.getByName("release")
         }
         named("debug").configure {
             isMinifyEnabled = false
@@ -49,18 +49,18 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
-play {
-    serviceAccountCredentials = file(project.extra["RELEASE_GPP_KEY"] as String)
-    track = "beta"
-    userFraction = 1.0
-    releaseStatus = "inProgress"
-    defaultToAppBundles = true
-
-    resolutionStrategy = "auto"
-    outputProcessor { // this: ApkVariantOutput
-        versionNameOverride = "$versionNameOverride.$versionCode"
-    }
-}
+//play {
+//    serviceAccountCredentials = file(project.extra["RELEASE_GPP_KEY"] as String)
+//    track = "beta"
+//    userFraction = 1.0
+//    releaseStatus = "inProgress"
+//    defaultToAppBundles = true
+//
+//    resolutionStrategy = "auto"
+//    outputProcessor { // this: ApkVariantOutput
+//        versionNameOverride = "$versionNameOverride.$versionCode"
+//    }
+//}
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 

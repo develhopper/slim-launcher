@@ -1,12 +1,14 @@
 package com.sduduzog.slimlauncher.ui.options
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.LauncherApps
 import android.os.Bundle
 import android.os.Process
 import android.os.UserManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +24,9 @@ import com.sduduzog.slimlauncher.utils.BaseFragment
 import com.sduduzog.slimlauncher.utils.OnAppClickedListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.add_app_fragment.*
+import java.lang.Exception
 import java.util.*
+import kotlin.math.log
 
 @AndroidEntryPoint
 class AddAppFragment : BaseFragment(), OnAppClickedListener {
@@ -30,8 +34,9 @@ class AddAppFragment : BaseFragment(), OnAppClickedListener {
     override fun getFragmentView(): ViewGroup = add_app_fragment
 
     private  val viewModel: AddAppViewModel by viewModels()
-
+    private var MODE:Int?=0
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        MODE=arguments?.getInt("MODE",0)
         return inflater.inflate(R.layout.add_app_fragment, container, false)
     }
 
@@ -79,8 +84,17 @@ class AddAppFragment : BaseFragment(), OnAppClickedListener {
     }
 
     override fun onAppClicked(app: App) {
-        viewModel.addAppToHomeScreen(app)
-        Navigation.findNavController(add_app_fragment).popBackStack()
+        if (MODE==0){
+            viewModel.addAppToHomeScreen(app)
+            Navigation.findNavController(add_app_fragment).popBackStack()
+        }else{
+            try{
+                val intent=context!!.packageManager.getLaunchIntentForPackage(app.packageName)
+                startActivity(intent)
+            }catch (e:Exception){
+                Log.d("Launch", "launch error")
+            }
+        }
     }
 
     private fun getInstalledApps(): List<App> {

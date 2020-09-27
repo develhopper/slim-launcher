@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.sduduzog.slimlauncher.R
@@ -120,6 +121,8 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
                 // Do nothing
             }
         }
+
+        home_fragment_more.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_addAppFragment, bundleOf("MODE" to 1)))
     }
 
     fun updateClock() {

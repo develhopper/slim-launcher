@@ -36,14 +36,15 @@ class AddAppFragment : BaseFragment(), OnAppClickedListener {
     private  val viewModel: AddAppViewModel by viewModels()
     private var MODE:Int?=0
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        MODE=arguments?.getInt("MODE",0)
+        MODE=arguments?.getInt("MODE")
+        if(MODE==null)
+            MODE=0
         return inflater.inflate(R.layout.add_app_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val adapter = AddAppAdapter(this)
-
         add_app_fragment_list.adapter = adapter
 
         viewModel.apps.observe(viewLifecycleOwner, Observer {
@@ -92,7 +93,7 @@ class AddAppFragment : BaseFragment(), OnAppClickedListener {
                 val intent=context!!.packageManager.getLaunchIntentForPackage(app.packageName)
                 startActivity(intent)
             }catch (e:Exception){
-                Log.d("Launch", "launch error")
+//                ignored
             }
         }
     }

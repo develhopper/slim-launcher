@@ -23,12 +23,4 @@ class MainViewModel @Inject constructor(baseDao: BaseDao) : ViewModel() {
         val index = _apps.value!!.size
         _baseRepository.add(HomeApp.from(app, index))
     }
-
-    fun update(vararg args: HomeApp) {
-        _baseRepository.update(*args)
-    }
-
-    fun remove(vararg app: HomeApp) {
-        _baseRepository.remove(*app)
-    }
 }

@@ -5,42 +5,33 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
+import com.sduduzog.slimlauncher.di.MainFragmentFactoryEntryPoint
 import com.sduduzog.slimlauncher.utils.BaseFragment
 import com.sduduzog.slimlauncher.utils.HomeWatcher
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import javax.inject.Inject
+import com.sduduzog.slimlauncher.utils.IPublisher
+import com.sduduzog.slimlauncher.utils.ISubscriber
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
         SharedPreferences.OnSharedPreferenceChangeListener,
-        HomeWatcher.OnHomePressedListener , HasSupportFragmentInjector{
+        HomeWatcher.OnHomePressedListener, IPublisher {
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return dispatchingAndroidInjector
-    }
-
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var settings: SharedPreferences
     private lateinit var navigator: NavController
     private lateinit var homeWatcher: HomeWatcher
     private val subscribers: MutableSet<BaseFragment> = mutableSetOf()
 
-    fun attachSubscriber(s: BaseFragment) {
-        subscribers.add(s)
+    override fun attachSubscriber(s: ISubscriber) {
+        subscribers.add(s as BaseFragment)
     }
 
-    fun detachSubscriber(s: BaseFragment) {
-        subscribers.remove(s)
+    override fun detachSubscriber(s: ISubscriber) {
+        subscribers.remove(s as BaseFragment)
     }
 
     private fun dispatchBack() {
@@ -53,7 +44,8 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
+        val entryPoint = EntryPointAccessors.fromActivity(this, MainFragmentFactoryEntryPoint::class.java)
+        supportFragmentManager.fragmentFactory = entryPoint.getMainFragmentFactory()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         settings = getSharedPreferences(getString(R.string.prefs_settings), MODE_PRIVATE)

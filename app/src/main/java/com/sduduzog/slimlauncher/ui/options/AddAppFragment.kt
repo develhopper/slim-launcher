@@ -8,7 +8,6 @@ import android.os.Process
 import android.os.UserManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +24,6 @@ import com.sduduzog.slimlauncher.utils.OnAppClickedListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.add_app_fragment.*
 import java.lang.Exception
-import java.util.*
-import kotlin.math.log
 
 @AndroidEntryPoint
 class AddAppFragment : BaseFragment(), OnAppClickedListener {
@@ -34,11 +31,11 @@ class AddAppFragment : BaseFragment(), OnAppClickedListener {
     override fun getFragmentView(): ViewGroup = add_app_fragment
 
     private  val viewModel: AddAppViewModel by viewModels()
-    private var MODE:Int?=0
+    private var launchMode:Int?=0
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        MODE=arguments?.getInt("MODE")
-        if(MODE==null)
-            MODE=0
+        launchMode=arguments?.getInt("launch_mode")
+        if(launchMode==null)
+            launchMode=0
         return inflater.inflate(R.layout.add_app_fragment, container, false)
     }
 
@@ -61,6 +58,7 @@ class AddAppFragment : BaseFragment(), OnAppClickedListener {
         super.onResume()
         viewModel.setInstalledApps(getInstalledApps())
         viewModel.filterApps("")
+        add_app_fragment_edit_text.setText("")
         add_app_fragment_edit_text.addTextChangedListener(onTextChangeListener)
     }
 
@@ -85,12 +83,13 @@ class AddAppFragment : BaseFragment(), OnAppClickedListener {
     }
 
     override fun onAppClicked(app: App) {
-        if (MODE==0){
+        if (launchMode==0){
             viewModel.addAppToHomeScreen(app)
             Navigation.findNavController(add_app_fragment).popBackStack()
         }else{
             try{
                 val intent=context!!.packageManager.getLaunchIntentForPackage(app.packageName)
+                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }catch (e:Exception){
 //                ignored

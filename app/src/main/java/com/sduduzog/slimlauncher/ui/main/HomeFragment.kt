@@ -122,7 +122,8 @@ class HomeFragment(private val viewModel: MainViewModel) : BaseFragment(), OnLau
             }
         }
 
-        home_fragment_more.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_addAppFragment, bundleOf("MODE" to 1)))
+        home_fragment_more.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_addAppFragment,
+                bundleOf("launch_mode" to 1)))
     }
 
     fun updateClock() {

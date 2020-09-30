@@ -39,6 +39,8 @@ android {
         }
         named("debug").configure {
             isMinifyEnabled = false
+            setApplicationIdSuffix(".debug")
+            setVersionNameSuffix("-DEBUG")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

@@ -50,9 +50,9 @@ class AddAppFragment : BaseFragment(), OnAppClickedListener {
         viewModel.apps.observe(viewLifecycleOwner, Observer {
             it?.let { apps ->
                 adapter.setItems(apps)
-                add_app_fragment_progress_bar.visibility = View.GONE
+//                add_app_fragment_progress_bar.visibility = View.GONE
             } ?: run {
-                add_app_fragment_progress_bar.visibility = View.VISIBLE
+//                add_app_fragment_progress_bar.visibility = View.VISIBLE
             }
         })
     }
